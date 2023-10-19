@@ -10,8 +10,21 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@iconify/react": "^4.1.1",
+    "@mui/lab": "^5.0.0-alpha.148",
+    "@mui/material": "^5.14.13",
+    "date-fns": "^2.30.0",
+    "framer-motion": "^10.16.4",
+    "lodash": "^4.17.21",
+    "notistack": "^3.0.1",
+    "nprogress": "^0.2.0",
+    "numeral": "^2.0.6",
+    "path": "^0.12.7",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "simplebar-react": "^3.2.4",
+    "swr": "^2.2.4"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
