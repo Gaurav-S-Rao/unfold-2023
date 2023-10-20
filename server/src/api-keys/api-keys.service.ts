@@ -9,15 +9,8 @@ import { UpdateApiKeyDto } from './dto/update-api-key.dto';
 export class ApiKeysService {
   constructor(private prisma: PrismaService) {}
   create(user: User, data: CreateApiKeyDto) {
-    return this.prisma.apiKeys.create({
-      data: {
-        name: data.name,
-        campaignTopics: data.category,
-        User: {
-          connect: user,
-        },
-      },
-    });
+    // return this.prisma.apiKeys.create({});
+    return '';
   }
 
   findAll() {
