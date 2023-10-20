@@ -5,9 +5,13 @@ import ToggleMode from '../_common/toggle-mode';
 import Iconify from 'src/components/iconify';
 import { ConnectButton, useWallet } from '@suiet/wallet-kit';
 import { useAuthContext } from 'src/auth/hooks';
+import { useAccount } from 'wagmi';
+import { ChainSelector } from 'src/components/chain-selector';
 
 export default function Header() {
   const settings = useSettingsContext();
+
+  const { isConnected: isConnectedWagmi } = useAccount();
 
   const { chain, connected, adapter } = useWallet();
 
@@ -91,6 +95,9 @@ export default function Header() {
                 />
               </>
             )}
+
+            {isConnectedWagmi && <ChainSelector />}
+
             <ToggleMode
               value={settings.themeMode}
               onChange={(newValue: string) => settings.onUpdate('themeMode', newValue)}
