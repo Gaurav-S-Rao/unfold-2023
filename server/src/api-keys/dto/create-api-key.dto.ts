@@ -5,5 +5,5 @@ export class CreateApiKeyDto {
   name: string;
 
   @IsString()
-  category: string;
+  campaignTopics: string;
 }
