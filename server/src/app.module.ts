@@ -11,6 +11,7 @@ import { CampaignsModule } from './campaigns/campaigns.module';
 import { AdvertisementsModule } from './advertisements/advertisements.module';
 import { ApiKeysModule } from './api-keys/api-keys.module';
 import { ClientSdkModule } from './client-sdk/client-sdk.module';
+import { SpheronStorageModule } from './spheron-storage/spheron-storage.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ClientSdkModule } from './client-sdk/client-sdk.module';
     AdvertisementsModule,
     ApiKeysModule,
     ClientSdkModule,
+    SpheronStorageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

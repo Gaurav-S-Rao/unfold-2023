@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react";
 import dts from "vite-plugin-dts";
 
 export default defineConfig({
-  plugins: [react(), dts({ include: ['src'] })],
+  plugins: [react(), dts({ rollupTypes: true })],
   resolve: {
     alias: [
       {
@@ -20,12 +20,12 @@ export default defineConfig({
   build: {
     outDir: "./dist",
     lib: {
-      entry: path.resolve(__dirname, "src/index.tsx"),
+      entry: path.resolve(__dirname, "src"),
       formats: ["es", "cjs"],
     },
     copyPublicDir: false,
-    rollupOptions: {
-      external: ["react", "react/jsx-runtime"],
-    },
+    // rollupOptions: {
+    //   external: ["react", "react/jsx-runtime"],
+    // },
   },
 });
