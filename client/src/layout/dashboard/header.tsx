@@ -1,4 +1,4 @@
-import { AppBar, IconButton, Stack, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Divider, IconButton, Stack, Toolbar, Typography } from '@mui/material';
 import Logo from 'src/components/logo';
 import { useSettingsContext } from 'src/components/settings';
 import ToggleMode from '../_common/toggle-mode';
@@ -10,6 +10,8 @@ export default function Header() {
   const settings = useSettingsContext();
 
   const { chain, connected, adapter } = useWallet();
+
+  const { user } = useAuthContext();
 
   const { disconnect } = useAuthContext();
 
@@ -24,7 +26,37 @@ export default function Header() {
             mt: 1,
           }}
         >
-          <Logo type="full" />
+          <Box
+            gap={2}
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'flex-start',
+              flexGrow: 1,
+            }}
+          >
+            <Logo type="full" />
+
+            <Divider
+              orientation="vertical"
+              flexItem
+              sx={{
+                border: '1px solid #fff',
+                maxHeight: 40,
+              }}
+            />
+
+            <Typography
+              variant="h3"
+              sx={{
+                textAlign: 'flex-start',
+                color: 'text.primary',
+              }}
+            >
+              {user?.role}
+            </Typography>
+          </Box>
 
           <Stack
             flexGrow={1}

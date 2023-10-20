@@ -28,6 +28,8 @@ export default function AdvertsPageViewContent() {
     },
     [tableData]
   );
+  
+  console.log(user?.advertisements)
 
   useEffect(() => {
     if (user) {
