@@ -1,7 +1,7 @@
 import { Button, CircularProgress, Paper, Stack, Typography } from '@mui/material';
 import { useWallet } from '@suiet/wallet-kit';
 import { enqueueSnackbar } from 'notistack';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuthContext } from 'src/auth/hooks';
 import { Address, recoverMessageAddress } from 'viem';
 import { useAccount, useSignMessage } from 'wagmi';
@@ -21,7 +21,12 @@ export default function LoginPageViewVerifyContent({ isLoading: isLoadingFetch, 
 
   const { address: addressWagmi } = useAccount();
 
-  const { data: signatureWagmi, signMessage: signMessageWagmi, variables } = useSignMessage();
+  const {
+    data: signatureWagmi,
+    signMessage: signMessageWagmi,
+    variables,
+    error,
+  } = useSignMessage();
 
   useEffect(() => {
     if (data) {
@@ -29,12 +34,15 @@ export default function LoginPageViewVerifyContent({ isLoading: isLoadingFetch, 
     }
   }, [data]);
 
-  async function handleVerify() {
-    if (!account) return;
+  useEffect(() => {
+    if (error) {
+      enqueueSnackbar(error.message, { variant: 'error' });
+    }
+  }, [error]);
 
-    // if (!addressWagmi) return;
-
+  async function handleVerify(e: React.MouseEvent<HTMLButtonElement>) {
     if (!addressWagmi) {
+      if (!account) return;
       try {
         const msgBytes = new TextEncoder().encode(message?.toString());
         const result = await signMessageSui({
@@ -59,9 +67,10 @@ export default function LoginPageViewVerifyContent({ isLoading: isLoadingFetch, 
         });
       }
     } else {
-      if (!data.message) return;
+      if (!addressWagmi) return;
+      // if (!data.message) return;
 
-      if (isLoadingFetch) return;
+      // if (isLoadingFetch) return;
 
       signMessageWagmi({ message: message.toString() });
     }

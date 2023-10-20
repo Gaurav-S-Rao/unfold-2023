@@ -44,4 +44,7 @@ export const endpoints = {
     update: (id: string) => `/advertisements/${id}`,
     delete: (id: string) => `/advertisements/${id}`,
   },
+  spheronToken: {
+    get: '/spheron-storage',
+  },
 };

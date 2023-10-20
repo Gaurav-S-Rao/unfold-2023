@@ -17,7 +17,7 @@ const Logo = forwardRef<HTMLDivElement, LogoProps>(
     const logo = (
       <Box
         component="img"
-        src={`/logo/logo_${type}___${settings.themeMode}.svg`}
+        src={`/logo/logo_${type}_${settings.themeMode}.svg`}
         sx={{ width: type === 'single' ? 68 : 236, height: 50, cursor: 'pointer', ...sx }}
       />
     );

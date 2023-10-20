@@ -11,7 +11,7 @@ import { Public } from 'src/common/decorators/public-api.decorator';
 export class SpheronStorageController {
   constructor(private readonly spheronStorageService: SpheronStorageService) {}
   @Get()
-  // @Public()
+  @Public()
   @ApiOkResponse({
     schema: {
       example: {
