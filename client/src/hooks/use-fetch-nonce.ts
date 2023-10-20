@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import { fetcher, endpoints } from 'src/utils/axios-instance';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useWallet } from '@suiet/wallet-kit';
 import { NONCE_TOKEN_KEY } from 'src/config-global';
 import { useAuthContext } from 'src/auth/hooks';
