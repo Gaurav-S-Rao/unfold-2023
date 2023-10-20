@@ -1,10 +1,11 @@
 import { Card, Table, TableBody, TableContainer } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
-import { useGetAdverts } from 'src/api/adverts';
+import { useGetAdvertsById } from 'src/api/adverts';
 import Scrollbar from 'src/components/scrollbar';
 import { TableHeadCustom, TableSkeleton, useTable } from 'src/components/table';
 import { IAdvertItem } from 'src/types/adverts';
 import AdvertsTableRow from './adverts-table-row';
+import { useAuthContext } from 'src/auth/hooks';
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Advertisement' },
@@ -17,11 +18,9 @@ const TABLE_HEAD = [
 export default function AdvertsPageViewContent() {
   const table = useTable();
 
-  const denseHeight = table.dense ? 60 : 80;
+  const { user } = useAuthContext();
 
   const [tableData, setTableData] = useState<IAdvertItem[]>([]);
-
-  const { adverts, advertsLoading, advertsError, advertsEmpty } = useGetAdverts();
 
   const handleViewRow = useCallback(
     (row: IAdvertItem) => {
@@ -31,10 +30,10 @@ export default function AdvertsPageViewContent() {
   );
 
   useEffect(() => {
-    if (adverts) {
-      setTableData(adverts);
+    if (user) {
+      setTableData(user.advertisements);
     }
-  }, [adverts]);
+  }, [user]);
 
   return (
     <Card>
@@ -49,23 +48,22 @@ export default function AdvertsPageViewContent() {
             />
 
             <TableBody>
-              {advertsLoading ? (
+              {/* {advertsLoading ? (
                 [...Array(table.rowsPerPage)].map((i, index) => (
                   <TableSkeleton key={index} sx={{ height: denseHeight }} />
                 ))
-              ) : (
-                <>
-                  {tableData.map((row) => (
-                    <AdvertsTableRow
-                      key={row.id}
-                      row={row}
-                      selected={table.selected.includes(row.id)}
-                      onSelectRow={() => table.onSelectRow(row.id)}
-                      onViewRow={() => handleViewRow(row)}
-                    />
-                  ))}
-                </>
-              )}
+              ) : ( */}
+              <>
+                {tableData.map((row) => (
+                  <AdvertsTableRow
+                    key={row.id}
+                    row={row}
+                    selected={table.selected.includes(row.id)}
+                    onSelectRow={() => table.onSelectRow(row.id)}
+                    onViewRow={() => handleViewRow(row)}
+                  />
+                ))}
+              </>
             </TableBody>
           </Table>
         </Scrollbar>

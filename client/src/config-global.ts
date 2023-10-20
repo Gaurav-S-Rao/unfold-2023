@@ -16,28 +16,100 @@ export const NONCE_TOKEN_KEY = 'nonceToken';
 
 export const COMPANY_CATEGORY_LIST = [
   {
-    value: 'e-com',
-    label: 'E-Commerce',
+    value: 'blockchain',
+    label: 'Blockchain',
   },
   {
-    value: 'fintech',
-    label: 'Fintech',
+    value: 'cryptocurrency',
+    label: 'Cryptocurrency',
   },
   {
-    value: 'healthcare',
-    label: 'Healthcare',
+    value: 'decentralized-finance',
+    label: 'Decentralized Finance',
   },
   {
-    value: 'education',
-    label: 'Education',
+    value: 'smart-contracts',
+    label: 'Smart Contracts',
   },
   {
-    value: 'travel',
-    label: 'Travel',
+    value: 'non-fungible-tokens',
+    label: 'Non-Fungible Tokens',
   },
   {
-    value: 'other',
-    label: 'Other',
+    value: 'virtual-reality',
+    label: 'Virtual Reality',
+  },
+  {
+    value: 'augmented-reality',
+    label: 'Augmented Reality',
+  },
+  {
+    value: 'internet-of-things',
+    label: 'Internet of Things',
+  },
+  {
+    value: 'artificial-intelligence',
+    label: 'Artificial Intelligence',
+  },
+  {
+    value: 'machine-learning',
+    label: 'Machine Learning',
+  },
+  {
+    value: 'data-analytics',
+    label: 'Data Analytics',
+  },
+  {
+    value: 'cyber-security',
+    label: 'Cyber Security',
+  },
+  {
+    value: 'cloud-computing',
+    label: 'Cloud Computing',
+  },
+  {
+    value: '5g-technology',
+    label: '5G Technology',
+  },
+  {
+    value: 'gaming',
+    label: 'Gaming',
+  },
+  {
+    value: 'content-creation',
+    label: 'Content Creation',
+  },
+  {
+    value: 'social-media',
+    label: 'Social Media',
+  },
+  {
+    value: 'sustainability',
+    label: 'Sustainability',
+  },
+  {
+    value: 'remote-work',
+    label: 'Remote Work',
+  },
+  {
+    value: 'automation',
+    label: 'Automation',
+  },
+  {
+    value: 'digital-identity',
+    label: 'Digital Identity',
+  },
+  {
+    value: 'quantum-computing',
+    label: 'Quantum Computing',
+  },
+  {
+    value: 'open-source',
+    label: 'Open Source',
+  },
+  {
+    value: 'web-development',
+    label: 'Web Development',
   },
 ];
 
