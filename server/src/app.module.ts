@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { CampaignsModule } from './campaigns/campaigns.module';
 import { AdvertisementsModule } from './advertisements/advertisements.module';
 import { ApiKeysModule } from './api-keys/api-keys.module';
+import { ClientSdkModule } from './client-sdk/client-sdk.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ApiKeysModule } from './api-keys/api-keys.module';
     CampaignsModule,
     AdvertisementsModule,
     ApiKeysModule,
+    ClientSdkModule,
   ],
   controllers: [AppController],
   providers: [AppService],
