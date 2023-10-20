@@ -8,17 +8,54 @@ import { UpdateApiKeyDto } from './dto/update-api-key.dto';
 @Injectable()
 export class ApiKeysService {
   constructor(private prisma: PrismaService) {}
-  create(user: User, data: CreateApiKeyDto) {
-    // return this.prisma.apiKeys.create({});
-    return '';
+  async create(user: User, data: CreateApiKeyDto) {
+    // return this.prisma.apiKeys.create({
+    //   data: {
+    //     name: data.name,
+    //     CampaignTopics: {
+    //       connectOrCreate: {
+    //         create: {
+    //           name: data.campaignTopics,
+    //         },
+    //         where: {
+    //           name: null,
+    //         },
+    //       },
+    //     },
+    //     User: {
+    //       connect: {
+    //         id: user.id,
+    //       },
+    //     },
+    //   },
+    // });
+
+    const campaignTopic = await this.prisma.campaignTopics.create({
+      data: {
+        name: data.campaignTopics,
+      },
+    });
+    const apiKey = await this.prisma.apiKeys.create({
+      data: {
+        name: data.name,
+        User: {
+          connect: {
+            id: user.id,
+          },
+        },
+        CampaignTopics: {
+          connect: {
+            id: campaignTopic.id,
+          },
+        },
+      },
+    });
+
+    return apiKey;
   }
 
   findAll() {
-    return this.prisma.apiKeys.findMany({
-      where: {
-        campaignTopics: {},
-      },
-    });
+    return this.prisma.apiKeys.findMany();
   }
 
   findOne(user: User) {
