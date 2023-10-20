@@ -5,7 +5,7 @@ export default function AdvertsPageNew() {
   return (
     <>
       <Helmet>
-        <title>New Adverts | SuiReach</title>
+        <title>New Adverts | OrbReach</title>
       </Helmet>
 
       <AdvertsPageNewView />

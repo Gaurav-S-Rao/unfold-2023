@@ -5,7 +5,7 @@ export default function LoginPage() {
   return (
     <>
       <Helmet>
-        <title>Login | SuiReach</title>
+        <title>Login | OrbReach</title>
       </Helmet>
 
       <LoginPageView />

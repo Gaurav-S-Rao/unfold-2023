@@ -8,7 +8,7 @@ export default function BillingPage({ credits = dummycredits }) {
   return (
     <>
       <Helmet>
-        <title>Billing | SuiReach</title>
+        <title>Billing | OrbReach</title>
       </Helmet>
 
       <Container
