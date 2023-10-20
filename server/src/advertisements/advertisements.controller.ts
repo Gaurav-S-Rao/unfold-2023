@@ -13,6 +13,8 @@ import { AdvertisementsService } from './advertisements.service';
 import { CreateAdvertisementDto } from './dto/create-advertisement.dto';
 import { UpdateAdvertisementDto } from './dto/update-advertisement.dto';
 import { Public } from 'src/common/decorators/public-api.decorator';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { User } from '@prisma/client';
 
 @Controller('advertisements')
 @ApiTags('Advertisements')
@@ -21,8 +23,8 @@ export class AdvertisementsController {
 
   @Post()
   @ApiBearerAuth()
-  create(@Body() body: CreateAdvertisementDto) {
-    return this.advertisementsService.create(body);
+  create(@Body() body: CreateAdvertisementDto, @CurrentUser() user: User) {
+    return this.advertisementsService.create(user, body);
   }
 
   @Get()
@@ -42,7 +44,7 @@ export class AdvertisementsController {
   update(@Param('id') id: string, @Body() body: UpdateAdvertisementDto) {
     return this.advertisementsService.update(id, body);
   }
-  
+
   @Delete(':id')
   @ApiBearerAuth()
   remove(@Param('id') id: string) {

@@ -22,9 +22,7 @@ export class UsersService {
   async findOne(id: string) {
     const ads = await this.prisma.advertisement.findMany({
       where: {
-        Campaign: {
-          userId: id,
-        },
+        userId: id,
       },
     });
 
