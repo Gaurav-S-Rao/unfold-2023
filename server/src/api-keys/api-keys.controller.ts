@@ -16,27 +16,24 @@ export class ApiKeysController {
   @Post()
   @ApiBearerAuth()
   create(@Body() body: CreateApiKeyDto, @CurrentUser() user: User) {
-    return this.apiKeysService.create(body, user);
+    return this.apiKeysService.create(user, body);
   }
 
   @Get()
   @ApiBearerAuth()
   findAll(@CurrentUser() user: User) {
-    const { apiKeysId } = user;
-    return this.apiKeysService.findOne(apiKeysId);
+    return this.apiKeysService.findOne(user);
   }
 
   @Patch()
   @ApiBearerAuth()
   update(@CurrentUser() user: User, @Body() body: UpdateApiKeyDto) {
-    const { apiKeysId } = user;
-    return this.apiKeysService.update(apiKeysId, body);
+    return this.apiKeysService.update(user, body);
   }
 
   @Delete()
   @ApiBearerAuth()
   remove(@CurrentUser() user: User) {
-    const { apiKeysId } = user;
-    return this.apiKeysService.remove(apiKeysId);
+    return this.apiKeysService.remove(user);
   }
 }

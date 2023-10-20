@@ -8,10 +8,11 @@ import { UpdateApiKeyDto } from './dto/update-api-key.dto';
 @Injectable()
 export class ApiKeysService {
   constructor(private prisma: PrismaService) {}
-  create(data: CreateApiKeyDto, user: User) {
+  create(user: User, data: CreateApiKeyDto) {
     return this.prisma.apiKeys.create({
       data: {
-        ...data,
+        name: data.name,
+        campaignTopics: data.category,
         User: {
           connect: user,
         },
@@ -20,18 +21,31 @@ export class ApiKeysService {
   }
 
   findAll() {
-    return this.prisma.apiKeys.findMany();
+    return this.prisma.apiKeys.findMany({
+      where: {
+        campaignTopics: {},
+      },
+    });
   }
 
-  findOne(id: string) {
-    return this.prisma.apiKeys.findUnique({ where: { id } });
+  findOne(user: User) {
+    return this.prisma.apiKeys.findUnique({
+      where: {
+        userId: user.id,
+      },
+    });
   }
 
-  update(id: string, data: UpdateApiKeyDto) {
-    return this.prisma.apiKeys.update({ where: { id }, data });
+  update(user: User, data: UpdateApiKeyDto) {
+    return this.prisma.apiKeys.update({
+      where: {
+        userId: user.id,
+      },
+      data,
+    });
   }
 
-  remove(id: string) {
-    return this.prisma.apiKeys.delete({ where: { id } });
+  remove(user: User) {
+    return this.prisma.apiKeys.delete({ where: { userId: user.id } });
   }
 }

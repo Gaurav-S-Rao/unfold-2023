@@ -30,9 +30,7 @@ model User {
   updatedAt        DateTime   @updatedAt
 
   campaigns Campaign[]
-
-  ApiKeys   ApiKeys? @relation(fields: [apiKeysId], references: [id])
-  apiKeysId String?  @db.ObjectId
+  ApiKeys   ApiKeys?
 }
 
 model Campaign {
@@ -55,25 +53,26 @@ model Campaign {
 }
 
 model ApiKeys {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  name         String?
-  clientId     String?
-  clientSecret String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  User User[]
+  User   User   @relation(fields: [userId], references: [id])
+  userId String @unique @db.ObjectId
 
-  campaignTopics String[] @db.ObjectId
+  campaignTopics String         @db.ObjectId
+  campaignTipics CampaignTopics @relation(fields: [campaignTopics], references: [id])
 }
 
 model CampaignTopics {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
   name       String
   totalView  Int
   totalClick Int
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  ApiKeys    ApiKeys[]
 }
 
 model Advertisement {
