@@ -4,7 +4,6 @@ import AuthGuard from 'src/auth/guard/auth-guard';
 import { LoadingScreen } from 'src/components/loading-screen';
 import DashboardLayout from 'src/layout/dashboard/layout';
 import BillingPage from 'src/pages/dashboard/billing-page';
-import CampaignPageNewPage from 'src/pages/dashboard/campaign-page-new';
 import DeveloperPage from 'src/pages/dashboard/developer-page';
 import NewProject from 'src/sections/Dashboard/publisher-dashboard/developer-project-new';
 
@@ -16,6 +15,9 @@ const AdvertsPage = lazy(() => import('src/pages/dashboard/adverts-page'));
 
 const AdvertsPageNew = lazy(() => import('src/pages/dashboard/adverts-page-new'));
 
+const CampaignPageNewPage = lazy(() => import('src/pages/dashboard/campaign-page-detail'));
+
+const CampaignDetailPage = lazy(() => import('src/pages/dashboard/campaign-page-detail'));
 export const dashboardRoutes = [
   {
     path: '/dashboard',
@@ -82,6 +84,10 @@ export const dashboardRoutes = [
             path: 'new',
             element: <CampaignPageNewPage />,
           },
+          {
+            path: ':id',
+            element: <CampaignDetailPage/>,
+          }
         ],
       },
     ],

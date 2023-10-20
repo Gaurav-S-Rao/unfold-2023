@@ -27,7 +27,7 @@ export const paths = {
     campaign: {
       root: `${ROOTS.DASHBOARD}/campaign`,
       new: (advertId: string) => `${ROOTS.DASHBOARD}/campaign/new?advertId=${advertId}`,
-
+      
       edit: `${ROOTS.DASHBOARD}/campaign/edit`,
       details: (id: string) => `${ROOTS.DASHBOARD}/campaign/${id}`,
     },
