@@ -1,12 +1,32 @@
-import { Box, Button, Card, Container, FormHelperText, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CardHeader,
+  Container,
+  FormHelperText,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { upload } from '@spheron/browser-upload';
+import { enqueueSnackbar } from 'notistack';
 import { useCallback, useEffect, useState } from 'react';
 import { UploadAvatar } from 'src/components/upload';
+import useFetchSpheronStorage from 'src/hooks/use-fetch-spheron-storage';
 import { useRouter } from 'src/routes/hooks';
 import { paths } from 'src/routes/paths';
 import axiosInstance, { endpoints } from 'src/utils/axios-instance';
 import { fData } from 'src/utils/format-number';
 export default function AdvertsPageNewView() {
-  const [avatarUrl, setAvatarUrl] = useState<any>();
+  const [file, setFile] = useState<File | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [uploadLink, setUploadLink] = useState<string | null>(null);
+  const [isLoadingSpheron, setIsLoadingSpheron] = useState<boolean>(false);
+
+  const open = file && !uploadLink ? true : false;
+  // const [dynamicLink, setDynamicLink] = useState('');
+
+  const { data, error, isLoading } = useFetchSpheronStorage({ activate: open });
 
   const { replace } = useRouter();
 
@@ -19,27 +39,35 @@ export default function AdvertsPageNewView() {
 
   const handleDrop = useCallback(
     (acceptedFiles: File[]) => {
-      const file = acceptedFiles[0];
+      const _file = acceptedFiles[0];
 
-      const newFile = Object.assign(file, {
-        preview: URL.createObjectURL(file),
+      if (_file) {
+        setFile(_file);
+      }
+      const newFile = Object.assign(_file, {
+        preview: URL.createObjectURL(_file),
       });
 
-      if (file) {
-        setAvatarUrl(newFile);
+      if (newFile) {
+        setAvatarUrl(newFile.preview);
       }
     },
-    [avatarUrl]
+    [file]
+  );
+
+  console.log(
+    '🚀 ~ file: adverts-page-new-view.tsx ~ line 65 ~ AdvertsPageNewView ~ uploadLink',
+    uploadLink
   );
 
   useEffect(() => {
-    if (avatarUrl) {
+    if (uploadLink) {
       setFormValues({
         ...formValues,
-        image: avatarUrl.preview,
+        image: `${uploadLink}/${file?.name}`,
       });
     }
-  }, [avatarUrl, formValues]);
+  }, [file, uploadLink]);
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -49,7 +77,31 @@ export default function AdvertsPageNewView() {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSpheronUpload = async () => {
+    if (!file) {
+      enqueueSnackbar('Please upload an image', {
+        variant: 'error',
+      });
+
+      return;
+    }
+
+    try {
+      setIsLoadingSpheron(true);
+      const uploadResult = await upload([file], {
+        token: data?.uploadToken,
+      });
+
+      setUploadLink(uploadResult.protocolLink);
+      // setDynamicLink(uploadResult.dynamicLinks[0]);
+    } catch (err) {
+      alert(err);
+    } finally {
+      setIsLoadingSpheron(false);
+    }
+  };
+
+  const handleFinalSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     console.log('🚀 ~ file: register-view.tsx ~ line 149 ~ handleSubmit ~ formValues', formValues);
@@ -72,7 +124,7 @@ export default function AdvertsPageNewView() {
       </Typography>
 
       {/* Upload Image card */}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleFinalSubmit}>
         <Box
           gap={2}
           sx={{
@@ -85,7 +137,7 @@ export default function AdvertsPageNewView() {
             }}
           >
             <Box sx={{ m: 2 }}>
-              <UploadAvatar onDrop={handleDrop} file={avatarUrl} />
+              <UploadAvatar onDrop={handleDrop} file={file} />
               <FormHelperText sx={{ px: 2 }}>
                 <Typography
                   variant="caption"
@@ -101,6 +153,50 @@ export default function AdvertsPageNewView() {
                   <br />a max size of {fData(3000000)}
                 </Typography>
               </FormHelperText>
+              <Box
+                sx={{
+                  mt: 2,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                }}
+              >
+                <Button
+                  onClick={handleSpheronUpload}
+                  variant="contained"
+                  color="primary"
+                  disabled={isLoading || error || !data || !file}
+                  sx={{
+                    minWidth: 200,
+                    minHeight: 40,
+                  }}
+                >
+                  Upload Image
+                </Button>
+                <Box
+                  gap={1}
+                  sx={{
+                    m: 1,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                  }}
+                >
+                  <FormHelperText sx={{ fontWeight: 'bold', mt: 0 }}>
+                    Powered by Spheron
+                  </FormHelperText>
+                  <img
+                    src={'https://avatars.githubusercontent.com/u/70075140?s=200&v=4'}
+                    width={24}
+                    height={24}
+                    style={{
+                      borderRadius: '50%',
+                    }}
+                  />
+                </Box>
+              </Box>
             </Box>
           </Card>
 
@@ -117,6 +213,16 @@ export default function AdvertsPageNewView() {
                 width: 500,
               }}
             >
+              <Typography
+                variant="h4"
+                sx={{
+                  m: 4,
+                  textAlign: 'flex-start',
+                  color: 'text.primary',
+                }}
+              >
+                Advertisement Details
+              </Typography>
               <Box
                 sx={{ m: 2, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
               >
@@ -168,7 +274,7 @@ export default function AdvertsPageNewView() {
               sx={{ m: 1, width: '100%', minHeight: 50 }}
               disabled={Object.values(formValues).some((value) => value === '')}
             >
-              Submit
+              {uploadLink ? 'Submit' : 'Upload Image To Continue'}
             </Button>
           </Box>
         </Box>
