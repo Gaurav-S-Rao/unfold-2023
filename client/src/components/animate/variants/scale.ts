@@ -1,6 +1,8 @@
 import { VariantsType } from '../types';
 import { varTranEnter, varTranExit } from './transition';
 
+// ----------------------------------------------------------------------
+
 export const varScale = (props?: VariantsType) => {
   const durationIn = props?.durationIn;
   const durationOut = props?.durationOut;
