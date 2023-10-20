@@ -10,6 +10,8 @@ import {
 } from '@mui/material';
 import TableRow from '@mui/material/TableRow';
 import { tableCellClasses } from '@mui/material/TableCell';
+import { fDateTime } from 'src/utils/format-time';
+import { useRouter } from 'src/routes/hooks';
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     color: theme.palette.common.black,
@@ -30,19 +32,25 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function campaignData(name: string, advtCount: number, creditsLeft: number) {
-  return { name, advtCount, creditsLeft };
+function campaignData(id: string, name: string, views: number, budget: number, createdAt: Date) {
+  return { id, name, views, budget, createdAt };
 }
 
 const rows = [
-  campaignData('Campaign 1', 10, 100),
-  campaignData('Campaign 2', 20, 200),
-  campaignData('Campaign 3', 30, 300),
-  campaignData('Campaign 4', 40, 400),
-  campaignData('Campaign 5', 50, 500),
+  campaignData('1', 'Campaign 1', 10, 100, new Date()),
+  campaignData('2', 'Campaign 2', 20, 200, new Date()),
+  campaignData('3', 'Campaign 3', 30, 300, new Date()),
+  campaignData('4', 'Campaign 4', 40, 400, new Date()),
+  campaignData('5', 'Campaign 5', 50, 500, new Date()),
 ];
 
 export default function CampaignsCardTable() {
+  const { push } = useRouter();
+
+  const handleButtonClick = () => {
+    push('/dashboard/campaign/id');
+  };
+
   return (
     <>
       <TableContainer sx={{ maxHeight: 440 }}>
@@ -50,8 +58,9 @@ export default function CampaignsCardTable() {
           <TableHead>
             <TableRow>
               <StyledTableCell> Campaign Name </StyledTableCell>
-              <StyledTableCell align="center">Advertisements Count</StyledTableCell>
-              <StyledTableCell align="center">Credits Left</StyledTableCell>
+              <StyledTableCell align="center">Advertisements Views</StyledTableCell>
+              <StyledTableCell align="center">Budget</StyledTableCell>
+              <StyledTableCell align="center">Created At </StyledTableCell>
               <StyledTableCell align="center"> </StyledTableCell>
             </TableRow>
           </TableHead>
@@ -62,15 +71,11 @@ export default function CampaignsCardTable() {
                 <StyledTableCell component="th" scope="row">
                   {row.name}
                 </StyledTableCell>
-                <StyledTableCell align="center">{row.advtCount}</StyledTableCell>
-                <StyledTableCell align="center">{row.creditsLeft}</StyledTableCell>
+                <StyledTableCell align="center">{row.views}</StyledTableCell>
+                <StyledTableCell align="center">{row.budget}</StyledTableCell>
+                <StyledTableCell align="center">{fDateTime(row.createdAt)}</StyledTableCell>
                 <StyledTableCell align="center">
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      console.log('View Campaign');
-                    }}
-                  >
+                  <Button variant="contained" onClick={handleButtonClick}>
                     <Typography variant="body2">View</Typography>
                   </Button>
                 </StyledTableCell>
