@@ -1,4 +1,5 @@
 import { ButtonBase, Card, CardContent, Typography } from '@mui/material';
+import { useRouter } from 'src/routes/hooks';
 
 type DeveloperGuideProps = {
   label: string;
@@ -11,11 +12,16 @@ export default function DeveloperGuideCard({
   width = 'auto',
   height = 'auto',
 }: DeveloperGuideProps) {
+  
+  const { push } = useRouter()
   return (
     <Card
       variant="outlined"
       sx={{ margin: 1, width: width, height: height }}
-      component={ButtonBase}
+      component={ButtonBase} 
+      onClick={
+        () => push('/dashboard/developer')
+      }
     >
       <CardContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Typography variant="h6">{label}</Typography>

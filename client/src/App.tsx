@@ -1,6 +1,13 @@
 // scrollbar
 import 'simplebar-react/dist/simplebar.min.css';
 
+// carousel
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
+// image
+import 'react-lazy-load-image-component/src/effects/blur.css';
+
 import Router from 'src/routes/sections';
 
 import ThemeProvider from 'src/theme';

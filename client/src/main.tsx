@@ -4,17 +4,17 @@ import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
 import { Suspense } from 'react';
 
-import { WalletProvider } from '@suiet/wallet-kit';
 import '@suiet/wallet-kit/style.css';
+import Web3Provider from './components/web3-provider';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <HelmetProvider>
-    <BrowserRouter>
-      <Suspense>
-        <WalletProvider>
+    <Web3Provider>
+      <BrowserRouter>
+        <Suspense>
           <App />
-        </WalletProvider>
-      </Suspense>
-    </BrowserRouter>
+        </Suspense>
+      </BrowserRouter>
+    </Web3Provider>
   </HelmetProvider>
 );

@@ -31,5 +31,10 @@ export const paths = {
       edit: `${ROOTS.DASHBOARD}/campaign/edit`,
       details: (id: string) => `${ROOTS.DASHBOARD}/campaign/${id}`,
     },
+    developer: {
+      root: `${ROOTS.DASHBOARD}/developer`,
+      new: `${ROOTS.DASHBOARD}/developer/new`,
+      details: (id: string) => `${ROOTS.DASHBOARD}/developer/${id}`,
+    },
   },
 };

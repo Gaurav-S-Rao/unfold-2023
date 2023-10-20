@@ -5,6 +5,8 @@ import { LoadingScreen } from 'src/components/loading-screen';
 import DashboardLayout from 'src/layout/dashboard/layout';
 import BillingPage from 'src/pages/dashboard/billing-page';
 import CampaignPageNewPage from 'src/pages/dashboard/campaign-page-new';
+import DeveloperPage from 'src/pages/dashboard/developer-page';
+import NewProject from 'src/sections/Dashboard/publisher-dashboard/developer-project-new';
 
 const DashboardHomePage = lazy(() => import('src/pages/dashboard/dashboard'));
 
@@ -53,6 +55,19 @@ export const dashboardRoutes = [
           {
             element: <AdvertsPageNew />,
             path: 'new',
+          },
+        ],
+      },
+      {
+        path: 'developer',
+        children: [
+          {
+            element: <div><DeveloperPage/></div>,
+            index: true,
+          },
+          {
+            path: 'new',
+            element: <div> <NewProject/> </div>,
           },
         ],
       },
