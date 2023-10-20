@@ -8,7 +8,7 @@ type props = {
   children: React.ReactNode;
 };
 
-function SuiReachProviderApp({ children }: props) {
+function ReachProviderApp({ children }: props) {
   return (
     <SettingsProvider
       defaultSettings={{
@@ -21,4 +21,4 @@ function SuiReachProviderApp({ children }: props) {
   );
 }
 
-export default SuiReachProviderApp;
+export default ReachProviderApp;

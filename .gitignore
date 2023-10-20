@@ -1,6 +1,7 @@
 # compiled output
 dist/
 node_modules/
+test_anything/
 nft_example/
 
 # Logs

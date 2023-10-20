@@ -3,15 +3,14 @@
   "private": false,
   "version": "0.0.0",
   "type": "module",
-  "module": "./dist/sdk.js",
+  "module": "./dist/reach-sdk.js",
   "types": "./dist/sdk.d.ts",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
-      "import": "./dist/sdk.js",
-      "require": "./dist/sdk.cjs"
+      "import": "./dist/reach-sdk.js"
     }
   },
   "scripts": {

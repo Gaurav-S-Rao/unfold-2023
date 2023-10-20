@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { SuireachProvider } from "reach-sdk";
+import { ReachProvider } from "reach-sdk";
 import App from "./App.tsx";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <SuireachProvider>
+    <ReachProvider clientId="alskfjsalfkd" >
       <App />
-    </SuireachProvider>
+    </ReachProvider>
   </React.StrictMode>
 );
