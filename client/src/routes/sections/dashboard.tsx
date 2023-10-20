@@ -62,12 +62,12 @@ export const dashboardRoutes = [
         path: 'developer',
         children: [
           {
-            element: <div><DeveloperPage/></div>,
+            element: <DeveloperPage />,
             index: true,
           },
           {
             path: 'new',
-            element: <div> <NewProject/> </div>,
+            element: <NewProject />,
           },
         ],
       },
