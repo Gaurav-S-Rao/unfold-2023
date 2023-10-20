@@ -30,11 +30,20 @@ export class ApiKeysService {
     //   },
     // });
 
-    const campaignTopic = await this.prisma.campaignTopics.create({
-      data: {
+    let campaignTopic = await this.prisma.campaignTopics.findFirst({
+      where: {
         name: data.campaignTopics,
       },
     });
+
+    if (!campaignTopic) {
+      campaignTopic = await this.prisma.campaignTopics.create({
+        data: {
+          name: data.campaignTopics,
+        },
+      });
+    }
+
     const apiKey = await this.prisma.apiKeys.create({
       data: {
         name: data.name,
