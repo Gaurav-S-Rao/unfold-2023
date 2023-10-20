@@ -19,12 +19,27 @@ export class UsersService {
     return this.prisma.user.findMany();
   }
 
-  findOne(id: string) {
-    return this.prisma.user.findFirst({
+  async findOne(id: string) {
+    const ads = await this.prisma.advertisement.findMany({
+      where: {
+        Campaign: {
+          userId: id,
+        },
+      },
+    });
+
+    const user = await this.prisma.user.findFirst({
       where: {
         id,
       },
     });
+
+    const userData = {
+      ...user,
+      advertisements: ads,
+    };
+
+    return userData;
   }
 
   findOneByAddress(platform: string, address: string) {
