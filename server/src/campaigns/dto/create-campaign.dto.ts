@@ -4,21 +4,27 @@ import {
   IsDate,
   IsDateString,
   IsOptional,
+  IsNumber,
   IsString,
   ValidateNested,
+  IsISO8601,
 } from 'class-validator';
-import { CreateAdvertisementDto } from 'src/advertisements/dto/create-advertisement.dto';
-import { IsDateStringFormat } from 'src/common/decorators/date-format-decorator';
+
 export class CreateCampaignDto {
   @IsString()
   name: string;
 
   // convert to date instance
-  @IsDateStringFormat()
+  // @IsDateStringFormat()
+  @IsISO8601()
   startDate: Date;
-
-  @IsDateStringFormat()
+  
+  // @IsDateStringFormat()
+  @IsISO8601()
   endDate: Date;
+
+  @IsNumber()
+  budget: number;
 
   // @IsOptional()
   // @ValidateNested()

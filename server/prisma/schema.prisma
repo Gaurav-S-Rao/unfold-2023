@@ -38,6 +38,7 @@ model Campaign {
   name      String
   views     Int      @default(0)
   clicks    Int      @default(0)
+  budget    Float
   startDate DateTime
   endDate   DateTime
   createdAt DateTime @default(now())
