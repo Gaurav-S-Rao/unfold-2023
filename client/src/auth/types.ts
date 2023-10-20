@@ -19,6 +19,7 @@ export type AuthStateType = {
   loading: boolean;
   connected: boolean;
   verified: boolean;
+  platform: 'sui' | 'evm' | null;
 };
 
 export type ContextType = {

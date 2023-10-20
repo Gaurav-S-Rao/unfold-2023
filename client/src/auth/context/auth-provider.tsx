@@ -5,7 +5,7 @@ import { isValidToken, setSession, jwtDecode } from './utils';
 
 import axios, { endpoints } from 'src/utils/axios-instance';
 // import { useMockedUser } from 'src/hooks/use-mocked-user';
-// import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import { useAccount, useConnect, useDisconnect } from 'wagmi';
 import { enqueueSnackbar } from 'notistack';
 import { useWallet } from '@suiet/wallet-kit';
 import { STORAGE_KEY, NONCE_TOKEN_KEY } from 'src/config-global';
@@ -26,9 +26,11 @@ type Payload = {
     connected: boolean;
     verified: boolean;
     user: AuthUserType;
+    platform: 'sui' | 'evm' | null;
   };
   [Types.CONNECT]: {
     address: AddressUserType;
+    platform: 'sui' | 'evm' | null;
   };
   [Types.VERIFY]: {
     user: AuthUserType;
@@ -44,6 +46,7 @@ const initialState: AuthStateType = {
   address: null,
   connected: false,
   verified: false,
+  platform: null,
 };
 
 const reducer = (state: AuthStateType, action: ActionsType): AuthStateType => {
@@ -51,9 +54,13 @@ const reducer = (state: AuthStateType, action: ActionsType): AuthStateType => {
     return {
       loading: false,
       connected: action.payload.connected,
-      address: action.payload.user?.address,
+      address: {
+        sui: action.payload.user?.sui_address,
+        evm: action.payload.user?.eth_address,
+      },
       verified: action.payload.verified,
       user: action.payload.user,
+      platform: action.payload.platform,
     };
   }
   if (action.type === Types.CONNECT) {
@@ -62,6 +69,7 @@ const reducer = (state: AuthStateType, action: ActionsType): AuthStateType => {
       connected: true,
       address: action.payload.address,
       verified: false,
+      platform: action.payload.platform,
     };
   }
   if (action.type === Types.VERIFY) {
@@ -73,6 +81,8 @@ const reducer = (state: AuthStateType, action: ActionsType): AuthStateType => {
     };
   }
   if (action.type === Types.DISCONNECT) {
+    setSession(null);
+    sessionStorage.removeItem('nonceToken');
     return {
       ...state,
       loading: false,
@@ -80,6 +90,7 @@ const reducer = (state: AuthStateType, action: ActionsType): AuthStateType => {
       connected: false,
       verified: false,
       user: null,
+      platform: null,
     };
   }
   return state;
@@ -90,15 +101,22 @@ export function AuthProvider({ children }: Props) {
 
   // const { user: _user } = useMockedUser();
 
-  const { connected: _connected, disconnect: disconnectSui, address } = useWallet();
+  const { connected: _connectedSui, disconnect: disconnectSui, address: addressSui } = useWallet();
 
-  const isDisconnected = useMemo(() => {
-    return Boolean(!_connected);
-  }, [_connected]);
+  const { disconnect: disconnectWagmi } = useDisconnect();
+  const {
+    isConnected: isConnectedWagmi,
+    address: addressWagmi,
+    isDisconnected: isDisconnectedWagmi,
+  } = useAccount();
 
-  const isConnected = useMemo(() => {
-    return Boolean(_connected);
-  }, [_connected]);
+  const isDisconnectedSui = useMemo(() => {
+    return Boolean(!_connectedSui);
+  }, [_connectedSui]);
+
+  const isConnectedSui = useMemo(() => {
+    return Boolean(_connectedSui);
+  }, [_connectedSui]);
 
   const initializeUser = useCallback(async () => {
     const accessToken = sessionStorage.getItem(STORAGE_KEY);
@@ -114,12 +132,15 @@ export function AuthProvider({ children }: Props) {
         .then((res) => {
           const data = res.data;
 
+          const isSuiAddress = data.sui_address ? true : false;
+
           dispatch({
             type: Types.INITIAL,
             payload: {
               connected: true,
               verified: true,
               user: data,
+              platform: isSuiAddress ? 'sui' : 'evm',
             },
           });
         })
@@ -128,12 +149,7 @@ export function AuthProvider({ children }: Props) {
 
           console.log('Error Initiallizing', err);
           dispatch({
-            type: Types.INITIAL,
-            payload: {
-              connected: false,
-              verified: false,
-              user: null,
-            },
+            type: Types.DISCONNECT,
           });
           enqueueSnackbar('Error could not get you connected please try again', {
             variant: 'error',
@@ -144,12 +160,7 @@ export function AuthProvider({ children }: Props) {
     // a testing user from mock user data to populate in initial state
     else {
       dispatch({
-        type: Types.INITIAL,
-        payload: {
-          connected: false,
-          verified: false,
-          user: null,
-        },
+        type: Types.DISCONNECT,
       });
     }
 
@@ -161,28 +172,33 @@ export function AuthProvider({ children }: Props) {
     //     user: { id: 'askd333fasdf1231h', name: 'Test user' },
     //   },
     // });
-  }, [isConnected, isDisconnected]);
+  }, [isConnectedSui, isConnectedWagmi, isDisconnectedSui, isDisconnectedWagmi]);
 
   const connect = useCallback(() => {
     dispatch({
       type: Types.CONNECT,
       payload: {
         address: {
-          evm: address,
+          evm: addressWagmi,
+          sui: addressSui,
         },
+        platform: addressSui ? 'sui' : 'evm',
       },
     });
-  }, [isConnected, isDisconnected]);
+  }, [isConnectedSui, isConnectedWagmi, isDisconnectedSui, isDisconnectedWagmi]);
 
   useEffect(() => {
     initializeUser();
-  }, [isConnected, isDisconnected, connect]);
+  }, [isConnectedSui, isConnectedWagmi, isDisconnectedSui, isDisconnectedWagmi, connect]);
 
   useEffect(() => {
-    if (isConnected) {
+    if (isConnectedSui) {
       connect();
     }
-  }, [isConnected]);
+    if (isConnectedWagmi) {
+      connect();
+    }
+  }, [isConnectedSui, isConnectedWagmi]);
 
   const verify = useCallback(
     async (signature: string) => {
@@ -218,17 +234,33 @@ export function AuthProvider({ children }: Props) {
           disconnect();
         });
     },
-    [address, isConnected, isDisconnected]
+    [
+      addressSui,
+      addressWagmi,
+      isConnectedSui,
+      isConnectedWagmi,
+      isDisconnectedSui,
+      isDisconnectedWagmi,
+    ]
   );
 
   const disconnect = useCallback(async () => {
     setSession(null);
     sessionStorage.removeItem('nonceToken');
-    disconnectSui();
+    state?.user?.platform === 'sui' ? disconnectSui() : disconnectWagmi();
     dispatch({
       type: Types.DISCONNECT,
     });
-  }, [isConnected, isDisconnected, disconnectSui, address]);
+  }, [
+    isConnectedSui,
+    isConnectedWagmi,
+    isDisconnectedSui,
+    isDisconnectedWagmi,
+    disconnectSui,
+    disconnectWagmi,
+    addressSui,
+    addressWagmi,
+  ]);
 
   const status = state.loading ? true : false;
 
