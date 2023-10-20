@@ -1,0 +1,86 @@
+UPDATING GIT DEPENDENCY https://github.com/MystenLabs/sui.git
+INCLUDING DEPENDENCY Sui
+INCLUDING DEPENDENCY MoveStdlib
+BUILDING contracts
+warning[W09001]: unused alias
+   ┌─ .\sources\contracts.move:10:14
+   │
+10 │     use sui::balance::{Self, Balance};
+   │              ^^^^^^^ Unused 'use' of alias 'balance'. Consider removing it
+   │
+   = This warning can be suppressed with '#[allow(unused_use)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+Successfully verified dependencies on-chain against source.
+----- Transaction Digest ----
+EcBiHoTgrS8C7EX6Dz4huho4rFKBBsMmLn2W2V7TNVuK
+----- Transaction Data ----
+Transaction Signature: [Signature(Ed25519SuiSignature(Ed25519SuiSignature([0, 156, 137, 75, 165, 15, 146, 243, 29, 172, 56, 107, 20, 101, 24, 196, 146, 23, 208, 74, 82, 166, 138, 110, 139, 13, 130, 114, 225, 29, 183, 246, 167, 118, 77, 98, 109, 109, 112, 164, 228, 203, 244, 49, 63, 226, 169, 166, 246, 71, 250, 18, 72, 126, 162, 110, 121, 44, 186, 47, 97, 110, 158, 55, 10, 97, 229, 248, 98, 29, 245, 74, 175, 23, 200, 61, 144, 247, 105, 15, 12, 228, 239, 134, 173, 3, 136, 155, 74, 236, 199, 116, 235, 52, 201, 43, 18])))]
+Transaction Kind : Programmable
+Inputs: [Pure(SuiPureValue { value_type: Some(Address), value: "0x9bcac87ff6f43109cb65a0a6e73fbd75384ce85ce9bd36021520a34843c77285" })]
+Commands: [
+  Publish(<modules>,0x0000000000000000000000000000000000000000000000000000000000000001,0x0000000000000000000000000000000000000000000000000000000000000002),     
+  TransferObjects([Result(0)],Input(0)),
+]
+
+Sender: 0x9bcac87ff6f43109cb65a0a6e73fbd75384ce85ce9bd36021520a34843c77285
+Gas Payment: Object ID: 0x5da69105e395e472580f5aa12fdd9bd76ccb508bf1deca8067a08bdd65debc07, version: 0xa, digest: 6CdsSyUp3s6D4LegNMn75WZL26PxhR8Wz9p5mjwVfbuZ  
+Gas Owner: 0x9bcac87ff6f43109cb65a0a6e73fbd75384ce85ce9bd36021520a34843c77285
+Gas Price: 1000
+Gas Budget: 10000000000
+
+----- Transaction Effects ----
+Status : Success
+Created Objects:
+  - ID: 0x2360c50378cc25dbaea1ddb9eaf009b37dbfb786e557821dbd68f03a7a41b23b , Owner: Account Address ( 0x9bcac87ff6f43109cb65a0a6e73fbd75384ce85ce9bd36021520a34843c77285 )
+  - ID: 0xb586a18470c1fb6f1e0156469612437b94e372a41c3178bb4b10da785577f6d5 , Owner: Immutable
+Mutated Objects:
+  - ID: 0x5da69105e395e472580f5aa12fdd9bd76ccb508bf1deca8067a08bdd65debc07 , Owner: Account Address ( 0x9bcac87ff6f43109cb65a0a6e73fbd75384ce85ce9bd36021520a34843c77285 )
+
+----- Events ----
+Array []
+----- Object changes ----
+Array [
+    Object {
+        "type": String("mutated"),
+        "sender": String("0x9bcac87ff6f43109cb65a0a6e73fbd75384ce85ce9bd36021520a34843c77285"),
+        "owner": Object {
+            "AddressOwner": String("0x9bcac87ff6f43109cb65a0a6e73fbd75384ce85ce9bd36021520a34843c77285"),
+        },
+        "objectType": String("0x2::coin::Coin<0x2::sui::SUI>"),
+        "objectId": String("0x5da69105e395e472580f5aa12fdd9bd76ccb508bf1deca8067a08bdd65debc07"),
+        "version": String("11"),
+        "previousVersion": String("10"),
+        "digest": String("ABPWV9DABQaCkedjLPFAz5bBA46FkygsBgz2uRnKv9c7"),
+    },
+    Object {
+        "type": String("created"),
+        "sender": String("0x9bcac87ff6f43109cb65a0a6e73fbd75384ce85ce9bd36021520a34843c77285"),
+        "owner": Object {
+            "AddressOwner": String("0x9bcac87ff6f43109cb65a0a6e73fbd75384ce85ce9bd36021520a34843c77285"),
+        },
+        "objectType": String("0x2::package::UpgradeCap"),
+        "objectId": String("0x2360c50378cc25dbaea1ddb9eaf009b37dbfb786e557821dbd68f03a7a41b23b"),
+        "version": String("11"),
+        "digest": String("GR2MeeNzDyncutBHU6a3Qfdj3y3JLUZTqo7iSZXLxbLK"),
+    },
+    Object {
+        "type": String("published"),
+        "packageId": String("0xb586a18470c1fb6f1e0156469612437b94e372a41c3178bb4b10da785577f6d5"),
+        "version": String("1"),
+        "digest": String("EiiCgkyu5dAXot2F95KuxzzY2HCFHSXX9e5MmC9TmU9j"),
+        "modules": Array [
+            String("contracts"),
+        ],
+    },
+]
+----- Balance changes ----
+Array [
+    Object {
+        "owner": Object {
+            "AddressOwner": String("0x9bcac87ff6f43109cb65a0a6e73fbd75384ce85ce9bd36021520a34843c77285"),
+        },
+        "coinType": String("0x2::sui::SUI"),
+        "amount": String("-10190680"),
+    },
+]
+PS C:\Users\krtin\D\Development\unfold-2k23\AdsSense\contracts>
