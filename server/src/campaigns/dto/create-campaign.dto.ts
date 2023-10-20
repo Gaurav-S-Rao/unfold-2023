@@ -18,13 +18,16 @@ export class CreateCampaignDto {
   // @IsDateStringFormat()
   @IsISO8601()
   startDate: Date;
-  
+
   // @IsDateStringFormat()
   @IsISO8601()
   endDate: Date;
 
   @IsNumber()
   budget: number;
+
+  @IsString()
+  campaignTopics: string;
 
   // @IsOptional()
   // @ValidateNested()

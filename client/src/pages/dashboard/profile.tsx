@@ -5,7 +5,7 @@ export default function Profile() {
   return (
     <>
       <Helmet>
-        <title>Profile | Sui Reach</title>
+        <title>Profile | OrbReach</title>
       </Helmet>
 
       <ProfileView />

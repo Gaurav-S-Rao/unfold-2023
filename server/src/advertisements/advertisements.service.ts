@@ -3,13 +3,19 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 import { CreateAdvertisementDto } from './dto/create-advertisement.dto';
 import { UpdateAdvertisementDto } from './dto/update-advertisement.dto';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AdvertisementsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(data: CreateAdvertisementDto) {
-    return this.prisma.advertisement.create({ data });
+  create(user: User, data: CreateAdvertisementDto) {
+    return this.prisma.advertisement.create({
+      data: {
+        ...data,
+        userId: user.id,
+      },
+    });
   }
 
   findAll() {

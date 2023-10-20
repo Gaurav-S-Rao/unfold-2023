@@ -21,3 +21,22 @@ export function useGetAdverts() {
 
   return memoizedValue;
 }
+
+export function useGetAdvertsById({ id }: { id: string | null }) {
+  const URL = id && endpoints.adverts.get(id);
+
+  const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
+
+  const memoizedValue = useMemo(
+    () => ({
+      adverts: data as IAdvertItem,
+      advertsLoading: isLoading,
+      advertsError: error,
+      advertsValidating: isValidating,
+      advertsEmpty: !isLoading && !data?.length,
+    }),
+    [data, error, isLoading, isValidating]
+  );
+
+  return memoizedValue;
+}

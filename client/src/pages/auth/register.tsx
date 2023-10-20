@@ -5,7 +5,7 @@ export default function RegisterPage() {
   return (
     <>
       <Helmet>
-        <title>Register | SuiReach</title>
+        <title>Register | OrbReach</title>
       </Helmet>
       
       <RegisterView />

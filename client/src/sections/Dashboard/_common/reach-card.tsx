@@ -18,7 +18,7 @@ type ItemProps = {
 };
 
 interface Props extends CardProps {
-  list: ItemProps[];
+  list?: ItemProps[];
 }
 
 export default function ReachCard({ list, ...other }: Props) {
@@ -38,18 +38,20 @@ export default function ReachCard({ list, ...other }: Props) {
   return (
     <Card {...other}>
       <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
-        {list.map((app, index) => (
+        {list?.map((app, index) => (
           <>
-            <CarouselItem key={app.id} item={app} active={index === carousel.currentIndex} />
+            <CarouselItem key={app?.id} item={app} active={index === carousel.currentIndex} />
           </>
         ))}
       </Carousel>
 
-      <CarouselArrows
-        onNext={carousel.onNext}
-        onPrev={carousel.onPrev}
-        sx={{ top: 8, right: 8, position: 'absolute', color: 'common.white' }}
-      />
+      {list && list?.length > 1 && (
+        <CarouselArrows
+          onNext={carousel.onNext}
+          onPrev={carousel.onPrev}
+          sx={{ top: 8, right: 8, position: 'absolute', color: 'common.white' }}
+        />
+      )}
     </Card>
   );
 }
@@ -57,22 +59,20 @@ export default function ReachCard({ list, ...other }: Props) {
 // ----------------------------------------------------------------------
 
 type CarouselItemProps = {
-  item: ItemProps;
+  item?: ItemProps;
   active?: boolean;
 };
 
 function CarouselItem({ item, active }: CarouselItemProps) {
   const theme = useTheme();
 
-  const { image, title, description } = item;
-
   const renderImg = (
     <Image
-      alt={title}
-      src={image}
-      overlay={`linear-gradient(to bottom, ${alpha(theme.palette.grey[900], 0.1)} 0%, ${
+      alt={item?.title}
+      src={item?.image}
+      overlay={`linear-gradient(to bottom, ${alpha(theme.palette.grey[200], 0.01)} 0%, ${
         theme.palette.grey[800]
-      } 98%)`}
+      } 178%)`}
       sx={{
         width: 1,
         height: {
@@ -105,14 +105,14 @@ function CarouselItem({ item, active }: CarouselItemProps) {
         <m.div variants={varFade().inRight}>
           <Link color="inherit" underline="none">
             <Typography variant="h5" noWrap>
-              <>{title}</>
+              <>{item?.title}</>
             </Typography>
           </Link>
         </m.div>
 
         <m.div variants={varFade().inRight}>
           <Typography variant="body2" noWrap>
-            {description}
+            {item?.description}
           </Typography>
         </m.div>
       </Stack>

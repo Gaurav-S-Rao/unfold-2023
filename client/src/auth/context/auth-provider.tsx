@@ -225,6 +225,8 @@ export function AuthProvider({ children }: Props) {
               user,
             },
           });
+          
+          window.location.reload();
         })
         .catch((err) => {
           console.log('err: ', err);
