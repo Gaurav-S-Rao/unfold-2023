@@ -50,7 +50,8 @@ model Campaign {
   userId String? @db.ObjectId
   User   User?   @relation(fields: [userId], references: [id])
 
-  campaignTopicsIds String[] @db.ObjectId
+  campaignTopicsIds String?         @db.ObjectId
+  CampaignTopicsIds CampaignTopics? @relation(fields: [campaignTopicsIds], references: [id])
 }
 
 model ApiKeys {
@@ -67,13 +68,14 @@ model ApiKeys {
 }
 
 model CampaignTopics {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  name       String    @unique
-  totalView  Int       @default(0)
-  totalClick Int       @default(0)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  name       String     @unique
+  totalView  Int        @default(0)
+  totalClick Int        @default(0)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
   ApiKeys    ApiKeys[]
+  Campaign   Campaign[]
 }
 
 model Advertisement {
