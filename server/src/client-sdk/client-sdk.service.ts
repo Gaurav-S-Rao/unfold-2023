@@ -18,20 +18,12 @@ export class ClientSdkService {
       where: {
         campaignTopicsIds: apiKey.campaignTopics,
       },
-    });
-
-    // picks a random campaign
-    const campaign = campaigns[Math.floor(Math.random() * campaigns.length)];
-
-    const advertisement = this.prisma.advertisement.findUnique({
-      where: {
-        id: campaign.advertisementId,
+      include: {
+        Advertisement: true,
       },
     });
-
     return {
-      advertisement,
-      campaign,
+      campaigns
     };
   }
 
