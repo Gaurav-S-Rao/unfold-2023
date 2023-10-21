@@ -9,21 +9,19 @@
 
 module contracts::reach_contract {
 
-    use sui::table::{Self, Table};
+    // use sui::table::{Self, Table};
     use sui::tx_context::{Self, TxContext};
     use sui::object::{Self, UID};
     use std::string::{Self, String};
     use sui::transfer;
-    use sui::event::emit;
     use sui::sui::SUI;
-    use sui::url::{Self, Url};
     use sui::balance::{Self, Balance};
-    
+    use sui::coin::{Self, Coin};
 
     struct Campaign has key, store {
         id: UID,
         creator: address,
-        budget: Balance<SUI>,
+        budget: Coin<SUI>,
         start_date: u64,
         end_date: u64,
         name: String,
@@ -31,22 +29,19 @@ module contracts::reach_contract {
         title: String,
         total_views: u64,
         total_clicks: u64,
-        image_url: Url,
-        link_url: Url
+        image_url: String,
+        link_url: String
     }
-
-    const campaign_table = Table::new<UID, Campaign>();
-
-
+ 
     public entry fun create_campaign(
         _name: String,
         _title: String,
         _description: String,
-        _image_url: Url,
-        _link_url: Url,
+        _image_url: String,
+        _link_url: String,
         _start_date: u64,
         _end_date: u64,
-        _budget: Balance<SUI>,
+        _budget: Coin<SUI>,
         ctx: &mut TxContext) {
 
         let new_campaign = Campaign {
@@ -62,10 +57,7 @@ module contracts::reach_contract {
             total_clicks: 0,
             image_url: _image_url,
             link_url: _link_url
-        };
-        campaign_table::add(new_campaign.id, new_campaign);
-        emit(new_campaign.id, new_campaign)
+        }; 
         transfer::share_object(new_campaign);
     } 
-
 }
