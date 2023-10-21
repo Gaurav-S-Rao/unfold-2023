@@ -6,7 +6,7 @@ import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ReachProvider clientId="65330175120c40ce59c169b0">
+    <ReachProvider clientId="65334534a3963583942cff6d">
       <App />
     </ReachProvider>
   </React.StrictMode>

@@ -26,15 +26,17 @@ export function ReachDataProvider({
 
   const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
 
+  // console.log("data", data?.campaigns[0]?.Advertisement[0])
+
   const memoizedValue = useMemo(
     () => ({
-      adverts: data["Advertisement"] || [],
+      adverts: data?.campaigns[0]?.Advertisement[0],
       advertsLoading: isLoading,
       advertsError: error,
       advertsValidating: isValidating,
       advertsEmpty: !isLoading && !data?.length,
     }),
-    [data, error, isLoading, isValidating]
+    [data?.campaigns, error, isLoading, isValidating]
   );
 
   return (
