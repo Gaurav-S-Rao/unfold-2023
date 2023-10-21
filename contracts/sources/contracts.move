@@ -5,134 +5,59 @@
 /// Rules:
 /// - anyone can create a campaign
 /// - recepient can receive funds from the campaign
-module contracts::contracts {
+
+
+module contracts::reach_contract {
+
+    // use sui::table::{Self, Table};
+    use sui::tx_context::{Self, TxContext};
+    use sui::object::{Self, UID};
+    use std::string::{Self, String};
     use sui::transfer;
+    use sui::sui::SUI;
     use sui::balance::{Self, Balance};
     use sui::coin::{Self, Coin};
-    use sui::sui::SUI;
-    use sui::object::{Self, UID};
-    use sui::tx_context::{Self, TxContext};
 
-    /// A campaign.
     struct Campaign has key, store {
         id: UID,
-        name: vector<u8>,
-        title: vector<u8>,
-        description: vector<u8>,
-        campaign_owner: address,
-        views: u64,
-        clicks: u64,
-        startDate: vector<u8>,
-        endDate: vector<u8>,
-        createdAt: vector<u8>,
-        updatedAt: vector<u8>,
-        cost: Balance<SUI>,
+        creator: address,
+        budget: Coin<SUI>,
+        start_date: u64,
+        end_date: u64,
+        name: String,
+        description: String,
+        title: String,
+        total_views: u64,
+        total_clicks: u64,
+        image_url: String,
+        link_url: String
     }
-
-    /// Create and share a Campaign and Advertisement.
+ 
     public entry fun create_campaign(
-        _name: vector<u8>, 
-        _title: vector<u8>,
-        _description: vector<u8>,
-        _startDate: vector<u8>,
-        _endDate: vector<u8>,
-        _createdAt: vector<u8>,
-        _updatedAt: vector<u8>,
-        c: Coin<SUI>,
+        _name: String,
+        _title: String,
+        _description: String,
+        _image_url: String,
+        _link_url: String,
+        _start_date: u64,
+        _end_date: u64,
+        _budget: Coin<SUI>,
         ctx: &mut TxContext) {
 
-        let b = coin::into_balance(c);
-
-        transfer::share_object(Campaign {
+        let new_campaign = Campaign {
             id: object::new(ctx),
+            creator: tx_context::sender(ctx),
+            budget: _budget,
+            start_date: _start_date,
+            end_date: _end_date,
             name: _name,
-            title: _title,
             description: _description,
-            campaign_owner: tx_context::sender(ctx),
-            views: 0,
-            clicks: 0,
-            startDate: _startDate,
-            endDate: _endDate,
-            createdAt: _createdAt,
-            updatedAt: _updatedAt,
-            cost: b,
-        });
-
-    }
-
-    public entry fun distribute_amount(
-        campaign:&mut Campaign,
-        recipient: address,
-        amount: u64,
-        ctx: &mut TxContext) {
-
-        let coin_to_split = coin::take(&mut campaign.cost, amount, ctx);
-
-        transfer::public_transfer(coin_to_split, recipient);
-
-    }
-
+            title: _title,
+            total_views: 0,
+            total_clicks: 0,
+            image_url: _image_url,
+            link_url: _link_url
+        }; 
+        transfer::share_object(new_campaign);
+    } 
 }
-
-// #[test_only]
-// module basics::counter_test {
-//     use sui::test_scenario;
-//     use basics::counter;
-
-//     #[test]
-//     fun test_counter() {
-//         let owner = @0xC0FFEE;
-//         let user1 = @0xA1;
-
-//         let scenario_val = test_scenario::begin(user1);
-//         let scenario = &mut scenario_val;
-
-//         test_scenario::next_tx(scenario, owner);
-//         {
-//             counter::create(test_scenario::ctx(scenario));
-//         };
-
-//         test_scenario::next_tx(scenario, user1);
-//         {
-//             let counter_val = test_scenario::take_shared<counter::Counter>(scenario);
-//             let counter = &mut counter_val;
-
-//             assert!(counter::owner(counter) == owner, 0);
-//             assert!(counter::value(counter) == 0, 1);
-
-//             counter::increment(counter);
-//             counter::increment(counter);
-//             counter::increment(counter);
-//             test_scenario::return_shared(counter_val);
-//         };
-
-//         test_scenario::next_tx(scenario, owner);
-//         {
-//             let counter_val = test_scenario::take_shared<counter::Counter>(scenario);
-//             let counter = &mut counter_val;
-
-//             assert!(counter::owner(counter) == owner, 0);
-//             assert!(counter::value(counter) == 3, 1);
-
-//             counter::set_value(counter, 100, test_scenario::ctx(scenario));
-
-//             test_scenario::return_shared(counter_val);
-//         };
-
-//         test_scenario::next_tx(scenario, user1);
-//         {
-//             let counter_val = test_scenario::take_shared<counter::Counter>(scenario);
-//             let counter = &mut counter_val;
-
-//             assert!(counter::owner(counter) == owner, 0);
-//             assert!(counter::value(counter) == 100, 1);
-
-//             counter::increment(counter);
-
-//             assert!(counter::value(counter) == 101, 2);
-
-//             test_scenario::return_shared(counter_val);
-//         };
-//         test_scenario::end(scenario_val);
-//     }
-// }

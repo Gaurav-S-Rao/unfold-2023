@@ -28,6 +28,9 @@ export class CreateCampaignDto {
 
   @IsString()
   campaignTopics: string;
+  
+  @IsString()
+  advertisementId?: string;
 
   // @IsOptional()
   // @ValidateNested()

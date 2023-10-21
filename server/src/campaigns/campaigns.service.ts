@@ -9,14 +9,39 @@ import { convertToDate } from 'src/common/convert-to-datejs';
 export class CampaignsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(user: User, data: CreateCampaignDto) {
+  async create(user: User, data: CreateCampaignDto) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     // const { advertisement, ...campaign } = data;
     data.startDate = convertToDate(data.startDate as any);
     data.endDate = convertToDate(data.endDate as any);
-    return this.prisma.campaign.create({
+
+    const { advertisementId, ...campaign } = data;
+
+    let campaignTopics = await this.prisma.campaignTopics.findUnique({
+      where: {
+        name: campaign.campaignTopics,
+      },
+    });
+
+    if (!campaignTopics) {
+      campaignTopics = await this.prisma.campaignTopics.create({
+        data: {
+          name: campaign.campaignTopics,
+        },
+      });
+    }
+
+    const newCampaign = await this.prisma.campaign.create({
       data: {
-        ...data,
+        budget: campaign.budget,
+        startDate: campaign.startDate,
+        endDate: campaign.endDate,
+        name: campaign.name,
+        CampaignTopicsIds: {
+          connect: {
+            name: campaign.campaignTopics,
+          },
+        },
         User: {
           connect: {
             id: user.id,
@@ -24,6 +49,19 @@ export class CampaignsService {
         },
       },
     });
+
+    const ad = await this.prisma.advertisement.update({
+      where: {
+        id: advertisementId,
+      },
+      data: {
+        campaignId: newCampaign.id,
+      },
+    });
+
+    newCampaign.advertisementId = ad.id;
+
+    return newCampaign;
   }
 
   findAll() {

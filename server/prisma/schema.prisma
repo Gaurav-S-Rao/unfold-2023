@@ -44,14 +44,14 @@ model Campaign {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  advertisement   Advertisement? @relation(fields: [advertisementId], references: [id])
-  advertisementId String?        @unique @db.ObjectId
+  advertisementId String? @db.ObjectId
 
   userId String? @db.ObjectId
   User   User?   @relation(fields: [userId], references: [id])
 
   campaignTopicsIds String?         @db.ObjectId
   CampaignTopicsIds CampaignTopics? @relation(fields: [campaignTopicsIds], references: [id])
+  Advertisement     Advertisement[]
 }
 
 model ApiKeys {
@@ -86,6 +86,7 @@ model Advertisement {
   link        String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  Campaign    Campaign?
+  Campaign    Campaign? @relation(fields: [campaignId], references: [id])
   userId      String?   @db.ObjectId
+  campaignId  String?   @db.ObjectId
 }

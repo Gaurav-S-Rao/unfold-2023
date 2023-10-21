@@ -56,7 +56,7 @@ export default function AdvertsPageViewContent() {
                 ))
               ) : ( */}
               <>
-                {tableData.map((row) => (
+                {tableData?.map((row) => (
                   <AdvertsTableRow
                     key={row.id}
                     row={row}

@@ -21,11 +21,11 @@ export default defineConfig({
     outDir: "./dist",
     lib: {
       entry: path.resolve(__dirname, "src"),
-      formats: ["es", "cjs"],
+      formats: ["es"],
     },
     copyPublicDir: false,
-    // rollupOptions: {
-    //   external: ["react", "react/jsx-runtime"],
-    // },
+    rollupOptions: {
+      external: ["react", "react/jsx-runtime"],
+    },
   },
 });

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 import { UpdateClientSdkDto } from './dto/update-client-sdk.dto';
@@ -13,9 +13,87 @@ export class ClientSdkService {
         id,
       },
     });
+
+    const campaigns = await this.prisma.campaign.findMany({
+      where: {
+        campaignTopicsIds: apiKey.campaignTopics,
+      },
+      include: {
+        Advertisement: true,
+      },
+    });
+    return {
+      campaigns
+    };
   }
 
-  update(id: string, data: UpdateClientSdkDto) {
-    return `${id}: ${data}`;
+  async update(id: string, data: UpdateClientSdkDto) {
+    const { advertisementId, clicked, viewed } = data;
+
+    const apiKey = await this.prisma.apiKeys.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!apiKey) {
+      throw new HttpException('Invalid API Key', HttpStatus.UNAUTHORIZED);
+    }
+
+    const campaign = await this.prisma.campaign.findUnique({
+      where: {
+        id: advertisementId,
+      },
+    });
+
+    if (!campaign) {
+      throw new HttpException('Invalid Campaign', HttpStatus.BAD_REQUEST);
+    }
+
+    if (clicked) {
+      await this.prisma.campaignTopics.update({
+        where: {
+          id: campaign.campaignTopicsIds,
+        },
+        data: {
+          totalClick: {
+            increment: 1,
+          },
+        },
+      });
+      await this.prisma.campaign.update({
+        where: {
+          id: advertisementId,
+        },
+        data: {
+          clicks: {
+            increment: 1,
+          },
+        },
+      });
+    }
+
+    if (viewed) {
+      await this.prisma.campaignTopics.update({
+        where: {
+          id: campaign.campaignTopicsIds,
+        },
+        data: {
+          totalClick: {
+            increment: 1,
+          },
+        },
+      });
+      await this.prisma.campaign.update({
+        where: {
+          id: advertisementId,
+        },
+        data: {
+          views: {
+            increment: 1,
+          },
+        },
+      });
+    }
   }
 }

@@ -51,6 +51,11 @@ export const endpoints = {
     update: (id: string) => `/campaigns/${id}`,
     delete: (id: string) => `/campaigns/${id}`,
   },
+  apiKey: {
+    get: '/api-keys',
+    create: '/api-keys',
+    update: `/api-keys/`,
+  },
   spheronToken: {
     get: '/spheron-storage',
   },

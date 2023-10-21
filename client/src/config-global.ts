@@ -16,6 +16,10 @@ export const NONCE_TOKEN_KEY = 'nonceToken';
 
 export const COMPANY_CATEGORY_LIST = [
   {
+    value:"fintech",
+    label:"Fintech",
+  },
+  {
     value: 'blockchain',
     label: 'Blockchain',
   },
