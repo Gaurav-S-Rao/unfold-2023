@@ -28,7 +28,7 @@ export function ReachDataProvider({
 
   const memoizedValue = useMemo(
     () => ({
-      adverts: data.[],
+      adverts: data["Advertisement"] || [],
       advertsLoading: isLoading,
       advertsError: error,
       advertsValidating: isValidating,
