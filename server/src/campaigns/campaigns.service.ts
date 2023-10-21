@@ -17,6 +17,20 @@ export class CampaignsService {
 
     const { advertisementId, ...campaign } = data;
 
+    let campaignTopics = await this.prisma.campaignTopics.findUnique({
+      where: {
+        name: campaign.campaignTopics,
+      },
+    });
+
+    if (!campaignTopics) {
+      campaignTopics = await this.prisma.campaignTopics.create({
+        data: {
+          name: campaign.campaignTopics,
+        },
+      });
+    }
+
     const newCampaign = await this.prisma.campaign.create({
       data: {
         budget: campaign.budget,
