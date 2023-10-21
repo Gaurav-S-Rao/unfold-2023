@@ -13,16 +13,16 @@ export default function ReachCard() {
     <Card>
       <>
         <h1>Reach Card</h1>
-        {adverts?.map((advert) => (
-          <div key={advert?.id}>
-            <h2>{advert?.title}</h2>
-            <p>{advert?.description}</p>
-            <p>{advert?.link}</p>
-            <p>{advert?.category}</p>
-            <p>{advert?.createdAt}</p>
-            <p>{advert?.updatedAt}</p>
+        {
+          <div key={adverts?.id}>
+            <h2>{adverts?.title}</h2>
+            <p>{adverts?.description}</p>
+            <p>{adverts?.link}</p>
+            <p>{adverts?.category}</p>
+            <p>{adverts?.createdAt}</p>
+            <p>{adverts?.updatedAt}</p>
           </div>
-        ))}
+        }
       </>
     </Card>
   );

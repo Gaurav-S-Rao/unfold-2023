@@ -1,7 +1,7 @@
 import { IAdvertItem } from "./context/reach-data-provider";
 
 export type ReachDataContextProps = {
-  adverts: IAdvertItem[];
+  adverts: IAdvertItem;
   advertsLoading: boolean;
   advertsError: any;
   advertsValidating: boolean;

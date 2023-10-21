@@ -15,16 +15,32 @@ import {
 } from '@mui/material';
 import ReachCard from '../_common/reach-card';
 import { useGetAdvertsById } from 'src/api/adverts';
-import { useState } from 'react';
+
+import orbReach from 'src/abi/orbreach.json';
+
+import { UseContractWriteConfig, useAccount } from 'wagmi';
+import { useEffect, useState } from 'react';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { COMPANY_CATEGORY_LIST } from 'src/config-global';
 import axiosInstance, { endpoints } from 'src/utils/axios-instance';
+import { useRouter } from 'src/routes/hooks';
+import { useWallet } from '@suiet/wallet-kit';
+import { enqueueSnackbar } from 'notistack';
+import { TransactionBlock } from '@mysten/sui.js/transactions';
+import { parseEther } from 'viem';
+import { useContractTransaction } from 'src/hooks/use-contract-transaction';
 
 type CampaignPageNewPageViewProps = {
   advertId: string | null;
 };
 
 export default function CampaignPageNewPageView({ advertId }: CampaignPageNewPageViewProps) {
+  const { push } = useRouter();
+
+  const wallet = useWallet();
+
+  const { address } = useAccount();
+
   const { adverts, advertsLoading, advertsError, advertsEmpty } = useGetAdvertsById({
     id: advertId,
   });
@@ -37,6 +53,9 @@ export default function CampaignPageNewPageView({ advertId }: CampaignPageNewPag
     budget: '',
   });
 
+  const startDate = new Date(formValues?.startDate)?.getTime();
+  const endDate = new Date(formValues?.endDate)?.getTime();
+
   // {
   //   "name": "string",
   //   "startDate": "2023-10-21T01:37:55.357Z",
@@ -45,6 +64,44 @@ export default function CampaignPageNewPageView({ advertId }: CampaignPageNewPag
   //   "campaignTopics": "string",
   //   "advertisementId": "string"
   // }
+
+  const args = {
+    abi: orbReach,
+    address: '0x22D49c04622eCCA58389f2fF4B39451ec5137C91',
+    functionName: 'createCampaign',
+    args: [formValues?.name, adverts?.title, adverts?.description, startDate, endDate, 0],
+    value: parseEther(formValues?.budget),
+  };
+
+  const { error, isLoading, isSuccess, write, transactionReceipt } = useContractTransaction(args);
+
+  useEffect(() => {
+    async function createCampaign() {
+      if (isSuccess) {
+        enqueueSnackbar('Transaction Successful!', {
+          variant: 'success',
+        });
+
+        try {
+          await axiosInstance.post(endpoints.campaigns.create, {
+            ...formValues,
+            budget: Number(formValues.budget),
+            advertisementId: adverts?.id,
+          });
+
+          enqueueSnackbar('Campaign created successfully', {
+            variant: 'success',
+          });
+
+          push('/dashboard');
+        } catch (err) {
+          console.log('🚀 ~ file: register-view.tsx ~ line 149 ~ handleSubmit ~ err', err);
+        }
+      }
+    }
+
+    createCampaign();
+  }, [isSuccess]);
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -103,16 +160,60 @@ export default function CampaignPageNewPageView({ advertId }: CampaignPageNewPag
       adverts?.id
     );
 
-    try {
-      await axiosInstance.post(endpoints.campaigns.create, {
-        ...formValues,
-        budget: Number(formValues.budget),
-        advertisementId: adverts?.id,
-      });
+    if (address) {
+      write();
+    }
 
-      window.location.reload();
-    } catch (err) {
-      console.log('🚀 ~ file: register-view.tsx ~ line 149 ~ handleSubmit ~ err', err);
+    if (wallet) {
+      try {
+        const tx = new TransactionBlock();
+
+        const packageObjectId =
+          '0x49cad455887f6d83153a37787102bbe1fc536d5627da4109c9c90a48dfa38c69';
+
+        tx.moveCall({
+          target: `${packageObjectId}::reach_contract::create_campaign`,
+          arguments: [
+            tx.pure(adverts.title),
+            tx.pure(formValues.name),
+            tx.pure(adverts.description),
+            tx.pure(adverts.image),
+            tx.pure(adverts.link),
+            tx.pure(startDate),
+            tx.pure(endDate),
+            tx.splitCoins(tx.gas, [100]),
+          ],
+        });
+
+        try {
+          const resData = await wallet.signAndExecuteTransactionBlock({
+            transactionBlock: tx,
+          });
+
+          console.log('Trasnsaction Succcessful!', resData);
+
+          enqueueSnackbar('Transaction Successful!', {
+            variant: 'success',
+          });
+        } catch (e) {
+          console.error('failed transaction', e);
+          return;
+        }
+
+        await axiosInstance.post(endpoints.campaigns.create, {
+          ...formValues,
+          budget: Number(formValues.budget),
+          advertisementId: adverts?.id,
+        });
+
+        enqueueSnackbar('Campaign created successfully', {
+          variant: 'success',
+        });
+
+        push('/dashboard');
+      } catch (err) {
+        console.log('🚀 ~ file: register-view.tsx ~ line 149 ~ handleSubmit ~ err', err);
+      }
     }
   };
 
