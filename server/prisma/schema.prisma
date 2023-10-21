@@ -44,7 +44,7 @@ model Campaign {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  advertisementId String? @unique @db.ObjectId
+  advertisementId String? @db.ObjectId
 
   userId String? @db.ObjectId
   User   User?   @relation(fields: [userId], references: [id])
