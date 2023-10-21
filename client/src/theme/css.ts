@@ -1,8 +1,11 @@
+// @mui
 import { alpha, Theme } from '@mui/material/styles';
 import { dividerClasses } from '@mui/material/Divider';
 import { checkboxClasses } from '@mui/material/Checkbox';
 import { menuItemClasses } from '@mui/material/MenuItem';
 import { autocompleteClasses } from '@mui/material/Autocomplete';
+
+// ----------------------------------------------------------------------
 
 export const paper = ({
   theme,
@@ -14,8 +17,8 @@ export const paper = ({
   dropdown?: boolean;
 }) => ({
   ...bgBlur({
-    blur: 18,
-    opacity: 0.8,
+    blur: 20,
+    opacity: 0.9,
     color: theme.palette.background.paper,
     ...(!!bgcolor && {
       color: bgcolor,
@@ -31,7 +34,7 @@ export const paper = ({
   ...(dropdown && {
     padding: theme.spacing(0.5),
     boxShadow: theme.customShadows.dropdown,
-    borderRadius: theme.shape.borderRadius * 1.26,
+    borderRadius: theme.shape.borderRadius * 1.25,
   }),
 });
 
@@ -39,10 +42,10 @@ export const paper = ({
 
 export const menuItem = (theme: Theme) => ({
   ...theme.typography.body2,
-  padding: theme.spacing(0.78, 1.2),
-  borderRadius: theme.shape.borderRadius * 0.78,
+  padding: theme.spacing(0.75, 1),
+  borderRadius: theme.shape.borderRadius * 0.75,
   '&:not(:last-of-type)': {
-    marginBottom: 6,
+    marginBottom: 4,
   },
   [`&.${menuItemClasses.selected}`]: {
     fontWeight: theme.typography.fontWeightSemiBold,
@@ -67,6 +70,8 @@ export const menuItem = (theme: Theme) => ({
   },
 });
 
+// ----------------------------------------------------------------------
+
 type BgBlurProps = {
   blur?: number;
   opacity?: number;
@@ -76,8 +81,8 @@ type BgBlurProps = {
 
 export function bgBlur(props?: BgBlurProps) {
   const color = props?.color || '#000000';
-  const blur = props?.blur || 7;
-  const opacity = props?.opacity || 0.6;
+  const blur = props?.blur || 6;
+  const opacity = props?.opacity || 0.8;
   const imgUrl = props?.imgUrl;
 
   if (imgUrl) {
@@ -88,7 +93,7 @@ export function bgBlur(props?: BgBlurProps) {
         position: 'absolute',
         top: 0,
         left: 0,
-        zIndex: 10,
+        zIndex: 9,
         content: '""',
         width: '100%',
         height: '100%',
@@ -105,6 +110,8 @@ export function bgBlur(props?: BgBlurProps) {
     backgroundColor: alpha(color, opacity),
   };
 }
+
+// ----------------------------------------------------------------------
 
 type BgGradientProps = {
   direction?: string;
@@ -137,6 +144,8 @@ export function bgGradient(props?: BgGradientProps) {
   };
 }
 
+// ----------------------------------------------------------------------
+
 export function textGradient(value: string) {
   return {
     background: `-webkit-linear-gradient(${value})`,
@@ -144,6 +153,8 @@ export function textGradient(value: string) {
     WebkitTextFillColor: 'transparent',
   };
 }
+
+// ----------------------------------------------------------------------
 
 export const hideScroll = {
   x: {

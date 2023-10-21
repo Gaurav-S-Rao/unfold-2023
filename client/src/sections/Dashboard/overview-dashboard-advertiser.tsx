@@ -9,8 +9,22 @@ export default function OverviewDashboardAdvertiser() {
   return (
     <Box display="flex" flexDirection="column" alignItems="center" m={2}>
       <Box display="flex" justifyContent="space-between" width="100%">
-        <AdvtPrefCard label="Advertiser Preference ➨" width={400} height={150} />
-        <BillingCard label="Billing ➨" width={400} height={150} />
+        <AdvtPrefCard
+          label="Create Advertisement  "
+          width={400}
+          height={150}
+          chart={{
+            series: [2, 9, 11],
+          }}
+        />
+        <BillingCard
+          label="Billing "
+          width={400}
+          height={150}
+          chart={{
+            series: [250, 150, 110],
+          }}
+        />
         <BusinessProfileCard label="Business Profile ➨" width={450} height={150} />
       </Box>
       <Box display="flex" justifyContent="space-between" width="100%" mt={2}>
