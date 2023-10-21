@@ -27,7 +27,7 @@ export const fetcher = async (args: string | [string, AxiosRequestConfig]) => {
 
 export const endpoints = {
   clientSdk: {
-    get: (id: string) => `/client-sdks/${id}`,
-    update: (id: string) => `/client-sdks/${id}`,
+    get: (id: string) => `/client-sdk/${id}`,
+    update: (id: string) => `/client-sdk/${id}`,
   },
 };

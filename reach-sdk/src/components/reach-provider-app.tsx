@@ -3,6 +3,16 @@ import { SettingsProvider } from "./settings";
 import React from "react";
 import { ReachDataProvider } from "./reach-data/context";
 
+// scrollbar
+import 'simplebar-react/dist/simplebar.min.css';
+
+// carousel
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
+// image
+import 'react-lazy-load-image-component/src/effects/blur.css';
+
 type props = {
   children: React.ReactNode;
   clientId?: string;

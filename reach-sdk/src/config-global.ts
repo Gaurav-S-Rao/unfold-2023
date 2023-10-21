@@ -4,6 +4,10 @@ export const ASSETS_API = import.meta.env.VITE_ASSETS_API;
 
 export const COMPANY_CATEGORY_LIST = [
   {
+    value:"fintech",
+    label:"Fintech",
+  },
+  {
     value: "blockchain",
     label: "Blockchain",
   },
