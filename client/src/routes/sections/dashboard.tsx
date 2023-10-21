@@ -15,7 +15,7 @@ const AdvertsPage = lazy(() => import('src/pages/dashboard/adverts-page'));
 
 const AdvertsPageNew = lazy(() => import('src/pages/dashboard/adverts-page-new'));
 
-const CampaignPageNewPage = lazy(() => import('src/pages/dashboard/campaign-page-detail'));
+const CampaignPageNewPage = lazy(() => import('src/pages/dashboard/campaign-page-new'));
 
 const CampaignDetailPage = lazy(() => import('src/pages/dashboard/campaign-page-detail'));
 export const dashboardRoutes = [

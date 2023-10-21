@@ -1,5 +1,5 @@
 import React from "react";
-import { SuiReachContextProvider } from "src/context/sui-reach-context-provider";
+import { SuiReachContextProvider } from "src/context/reach-context-provider";
 import SuiReachProviderApp from "./reach-provider-app";
 
 type ProviderProps = {
@@ -10,7 +10,7 @@ type ProviderProps = {
 const SuireachProvider: React.FC<ProviderProps> = ({ children, clientId }) => {
   return (
     <SuiReachContextProvider>
-      <SuiReachProviderApp>{children}</SuiReachProviderApp>
+      <SuiReachProviderApp clientId={clientId}>{children}</SuiReachProviderApp>
     </SuiReachContextProvider>
   );
 };

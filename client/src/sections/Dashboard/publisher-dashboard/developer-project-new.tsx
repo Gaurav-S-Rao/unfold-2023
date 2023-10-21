@@ -199,7 +199,7 @@ export default function NewProject() {
                           <InputAdornment position="end">
                             <ContentCopyIcon
                               cursor="pointer"
-                              onClick={() => onCopy('Project id')}
+                              onClick={() => onCopy(authApi.id)}
                             />
                           </InputAdornment>
                         ),

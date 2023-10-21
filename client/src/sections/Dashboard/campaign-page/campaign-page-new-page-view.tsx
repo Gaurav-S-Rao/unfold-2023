@@ -31,11 +31,20 @@ export default function CampaignPageNewPageView({ advertId }: CampaignPageNewPag
 
   const [formValues, setFormValues] = useState({
     name: '',
-    campaignTopic: '',
+    campaignTopics: '',
     startDate: '',
     endDate: '',
     budget: '',
   });
+
+  // {
+  //   "name": "string",
+  //   "startDate": "2023-10-21T01:37:55.357Z",
+  //   "endDate": "2023-10-21T01:37:55.357Z",
+  //   "budget": 10,
+  //   "campaignTopics": "string",
+  //   "advertisementId": "string"
+  // }
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -89,13 +98,15 @@ export default function CampaignPageNewPageView({ advertId }: CampaignPageNewPag
 
     console.log(
       '🚀 ~ file: campaign-page-new-page-view.tsx ~ line 120 ~ handleSubmit ~ formValues',
-      formValues
+      formValues,
+      Number(formValues.budget),
+      adverts?.id
     );
 
     try {
       await axiosInstance.post(endpoints.campaigns.create, {
         ...formValues,
-        advertisement: adverts,
+        budget: Number(formValues.budget),
         advertisementId: adverts?.id,
       });
 
@@ -180,8 +191,8 @@ export default function CampaignPageNewPageView({ advertId }: CampaignPageNewPag
                     <InputLabel>Company Type</InputLabel>
                     <Select
                       id="demo-simple-select-helper"
-                      name="campaignTopic"
-                      value={formValues.campaignTopic}
+                      name="campaignTopics"
+                      value={formValues.campaignTopics}
                       onChange={handleFormChange}
                     >
                       {COMPANY_CATEGORY_LIST.map((companyType) => {
@@ -244,7 +255,7 @@ export default function CampaignPageNewPageView({ advertId }: CampaignPageNewPag
                 onClick={() => {
                   setFormValues({
                     name: '',
-                    campaignTopic: '',
+                    campaignTopics: '',
                     startDate: '',
                     endDate: '',
                     budget: '',
