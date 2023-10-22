@@ -60,4 +60,14 @@ module contracts::reach_contract {
         }; 
         transfer::share_object(new_campaign);
     } 
+    public entry fun distribute_amount(
+        campaign:&mut Campaign,
+        recipient: address,
+        amount: u64,
+        ctx: &mut TxContext) {
+
+        let coin_to_split = coin::take(&mut campaign.cost, amount, ctx);
+
+        transfer::public_transfer(coin_to_split, recipient);
+    }
 }

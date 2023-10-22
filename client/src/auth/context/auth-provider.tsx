@@ -217,6 +217,7 @@ export function AuthProvider({ children }: Props) {
           enqueueSnackbar('Successfully verified', { variant: 'success' });
 
           sessionStorage.setItem(STORAGE_KEY, access_token);
+
           axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
 
           dispatch({
